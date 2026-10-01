@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>hello</div>;
+  return <div>THis is a sample text to be rendered</div>;
 }
