@@ -1,3 +1,10 @@
+import { Button } from "@/components/ui/button";
+
 export default function Home() {
-  return <div>THis is a sample text to be rendered</div>;
+  return (
+    <div>
+      <Button>Button</Button>
+    </div>
+  );
 }
+
