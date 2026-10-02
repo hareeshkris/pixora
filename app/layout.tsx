@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import Provider from "./provider";
 
 const appFont = DM_Sans({
   subsets: ["latin"],
@@ -14,11 +16,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${appFont.className}`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
-    </html>
+    <ClerkProvider>
+      <html
+        lang="en"
+        className={`${appFont.className}`}
+        suppressHydrationWarning
+      >
+        <Provider>
+          <body className="min-h-full flex flex-col">{children}</body>
+        </Provider>
+      </html>
+    </ClerkProvider>
   );
 }
