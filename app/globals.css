@@ -55,9 +55,9 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(0.7767 0.2501 144.21);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: #006E14;
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -121,10 +121,37 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }
+}
+
+:is(input, textarea, select, [role="combobox"]):focus {
+  box-shadow: none;
+}
+
+.heading-1 {
+  font-weight: 700;
+  font-size: 65px;
+  line-height: 1.01;
+  letter-spacing: -1.5px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.heading-1 span {
+  font-size: 78px;
+  line-height: 1.01;
+  color: var(--primary);
+  background: linear-gradient(to right, var(--color-primary), var(--secondary));
+  width: fit-content;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 auto;
+  display: inline-block;
 }
