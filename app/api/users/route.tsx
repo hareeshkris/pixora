@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     );
   if (users.length === 0) {
     const data = {
-      name: user?.firstName as string,
+      name: user?.firstName ?? '',
       email: user?.primaryEmailAddress?.emailAddress as string,
     };
     const result = await db

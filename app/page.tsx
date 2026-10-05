@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { UserButton } from "@clerk/nextjs";
+import Header from "./appComponents/common/Header";
+import Hero from "./appComponents/home/Hero";
 
 export default function Home() {
   return (
     <div>
-      <Button>Button</Button>
-      <UserButton />
+      <Header />
+      <Hero />
     </div>
   );
 }

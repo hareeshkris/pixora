@@ -22,9 +22,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         className={`${appFont.className}`}
         suppressHydrationWarning
       >
-        <Provider>
-          <body className="min-h-full flex flex-col">{children}</body>
-        </Provider>
+        <body className="min-h-full flex flex-col bg-[#F5FBF4CC]">
+          <Provider>{children}</Provider>
+        </body>
       </html>
     </ClerkProvider>
   );
