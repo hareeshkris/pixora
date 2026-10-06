@@ -14,14 +14,13 @@ const ProjectDetailPage = () => {
 
   const [screenConfig, setScreenConfig] = useState<screenConfigType[]>([]);
 
-  const [loading, setLoading] = useState<boolean>(false);
-
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
 
   const { projectId } = useParams();
 
-  // Prevent duplicate generation requests
-  const generationStarted = useRef(false);
+  const configGenerationStarted = useRef(false);
+  const uiGenerationStarted = useRef(false);
 
   useEffect(() => {
     if (!projectId) return;
@@ -47,14 +46,14 @@ const ProjectDetailPage = () => {
       setProjectDetail(detail);
       setScreenConfig(screens);
 
-      // Generate screens only when there are no existing screens
-      if (screens.length === 0 && !generationStarted.current) {
-        generationStarted.current = true;
+      // Generate screen configuration if it doesn't exist
+      if (screens.length === 0 && !configGenerationStarted.current) {
+        configGenerationStarted.current = true;
 
         const generatedConfig = await generateScreenConfig(detail);
 
-        if (generatedConfig) {
-          setScreenConfig(generatedConfig.screens ?? []);
+        if (generatedConfig?.screens) {
+          setScreenConfig(generatedConfig.screens);
         }
       }
     } catch (err) {
@@ -72,30 +71,26 @@ const ProjectDetailPage = () => {
 
   const generateScreenConfig = async (detail: projectDetailType) => {
     try {
-
       const response = await axios.post("/api/generate-config", {
         projectId,
         deviceType: detail.device,
         userInput: detail.userInput,
       });
 
-
       const generatedScreenConfig = response.data.jsonAIResult;
-      getProjectDetails()
 
-      console.log(generatedScreenConfig, "generatedscreenconfig");
+      console.log(generatedScreenConfig, "generated screen config");
 
       return generatedScreenConfig;
     } catch (error) {
       console.error("Failed to generate screen config:", error);
 
       if (axios.isAxiosError(error)) {
-        const errorMessage =
+        setError(
           error.response?.data?.error ||
-          error.message ||
-          "Failed to generate screen config";
-
-        setError(errorMessage);
+            error.message ||
+            "Failed to generate screen config",
+        );
       } else {
         setError("Failed to generate screen config");
       }
@@ -104,12 +99,69 @@ const ProjectDetailPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (!projectDetail) return;
+    if (!screenConfig.length) return;
+
+    if (uiGenerationStarted.current) return;
+
+    uiGenerationStarted.current = true;
+
+    generateUIScreen();
+  }, [projectDetail, screenConfig]);
+
+  const generateUIScreen = async () => {
+    setLoading(true);
+
+    try {
+      for (const screen of screenConfig) {
+        // Don't regenerate existing screens
+        if (screen.code) continue;
+
+        console.log(`Generating UI for: ${screen.screenName}`);
+
+        const response = await axios.post("/api/generate-screen", {
+          projectId,
+          screenId: screen.screenId,
+          screenName: screen.screenName,
+          purpose: screen.purpose,
+          screenDescription: screen.screenDescription,
+        });
+
+        console.log(response.data, "screen ui-ux");
+
+        setScreenConfig((prev) =>
+          prev.map((item) =>
+            item.screenId === screen.screenId
+              ? {
+                  ...item,
+                  ...response.data,
+                }
+              : item,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error("Screen generation failed:", error);
+
+      if (axios.isAxiosError(error)) {
+        setError(
+          error.response?.data?.error ||
+            error.message ||
+            "Screen generation failed",
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-0">
       <ProjectHeader />
 
       {loading && (
-        <div className="absolute inset-0 w-full h-full bg-white flex items-center justify-center">
+        <div className="absolute inset-0 w-full h-full bg-white flex items-center justify-center z-50">
           <Loader2 className="animate-spin size-6" />
         </div>
       )}

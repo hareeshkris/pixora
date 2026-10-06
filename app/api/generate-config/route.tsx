@@ -214,8 +214,8 @@ export async function POST(req: NextRequest) {
 
         screenName: screen.name,
 
-        // Your schema currently has "porpose"
-        porpose: screen.purpose,
+        // Your schema currently has "purpose"
+        purpose: screen.purpose,
 
         screenDescription: screen.layoutDescription,
 

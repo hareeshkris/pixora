@@ -26,7 +26,7 @@ export const screenConfigTable = pgTable('screenConfig',{
   projectId: varchar().references(() => projectsTable.projectId),
   screenId:varchar(),
   screenName:varchar(),
-  porpose:varchar(),
+  purpose:varchar(),
   screenDescription:varchar(),
   code:text(),
 
