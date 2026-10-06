@@ -3,13 +3,27 @@ import { THEME_OPTIONS, THEMES } from "@/app/store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { projectDetailType } from "@/config/types";
 import { CameraIcon, Share2Icon, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const ProjectSettings = () => {
-  const [selectedTheme, setSelectedTheme] = useState<string>(THEME_OPTIONS[0].value);
-  const [projectName, setProjectName] = useState<string>("");
+type props = {
+  projectDetails: projectDetailType | undefined;
+};
+const ProjectSettings = ({ projectDetails }: props) => {
+  const [selectedTheme, setSelectedTheme] = useState<string>(
+    THEME_OPTIONS[0].value,
+  );
+  const [projectName, setProjectName] = useState<string>(
+    projectDetails?.projectName ?? "",
+  );
   const [newScreenPrompt, setNewScreenPrompt] = useState<string>("");
+
+  useEffect(() => {
+    if (projectDetails) {
+      setProjectName(projectDetails?.projectName ?? "");
+    }
+  }, [projectDetails]);
   return (
     <div className="w-[280px] flex flex-col gap-4 shrink-0  p-5 min-h-[calc(100vh-49px)] bg-gray-50 border-r border-gray-200">
       <div className="w-full flex flex-col gap-1.5">
@@ -80,8 +94,12 @@ const ProjectSettings = () => {
         </div>
       </div>
       <div className="w-full flex  gap-1.5 mb-10">
-        <Button variant={'outline'} className={'rounded-sm'} ><CameraIcon className="size-4" /> Take a screenshot</Button>
-        <Button variant={'outline'} className={'rounded-sm'} ><Share2Icon className="size-3" /> Share</Button>
+        <Button variant={"outline"} className={"rounded-sm"}>
+          <CameraIcon className="size-4" /> Take a screenshot
+        </Button>
+        <Button variant={"outline"} className={"rounded-sm"}>
+          <Share2Icon className="size-3" /> Share
+        </Button>
       </div>
     </div>
   );

@@ -252,3 +252,4 @@ export const THEME_OPTIONS = THEME_NAMES.map((name) => ({
   value: name,
   label: formatThemeName(name),
 }));
+
