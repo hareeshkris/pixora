@@ -27,12 +27,34 @@ const items = [
 
 const Hero = () => {
   const [userInput, setUserInput] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<"website" | "mobile">(
     "website",
   );
   const [loading, setLoading] = useState<boolean>(false);
   const user = useUser();
   const route = useRouter();
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setUserInput(value);
+
+    if (value.trim() === "") {
+      setError("Please enter a prompt");
+    } else {
+      setError(null);
+    }
+  }
+
+  const handleUserInput = (value: string) => {
+    setUserInput(value);
+
+    if (value.trim() === "") {
+      setError("Please enter a prompt");
+    } else {
+      setError(null);
+    }
+  }
 
   const createProject = async () => {
     if (!user.isSignedIn) {
@@ -41,7 +63,7 @@ const Hero = () => {
     }
 
     if (!userInput || userInput.trim() === "") {
-      alert("Please enter a prompt");
+      setError("Please enter a prompt");
       return;
     }
     setLoading(true);
@@ -55,6 +77,8 @@ const Hero = () => {
 
     console.log(response.data);
     setLoading(false);
+    route.push(`/project/${projectId}`);
+    setUserInput("");
   };
 
   return (
@@ -71,14 +95,17 @@ const Hero = () => {
               assets, and <br /> professional designs in seconds.
             </p>
           </div>
-          <div className="grid w-full max-w-3xl mx-auto gap-6">
-            <InputGroup className="bg-white rounded-xl z-10 shadow-[0px_20px_48px_-12px_#00390E1A]">
+          <div className="grid w-full max-w-3xl mx-auto gap-6 relative">
+            <InputGroup
+              className={`bg-white rounded-xl z-10 shadow-[0px_20px_48px_-12px_#00390E1A] ${error ? "border border-red-500" : ""} ${loading ? "opacity-50 pointer-events-none" : ""}`}
+            >
               <InputGroupTextarea
                 data-slot="input-group-control"
                 className="flex  field-sizing-content min-h-32 w-full resize-none rounded-md bg-transparent px-4 py-4 text-base  outline-none md:text-base placeholder:italic placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 placeholder="Futuristic sustainable electric vehicle landing page with sleek 3D renders, neon green accents, and interactive specs..."
                 value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
+                // onChange={(e) => setUserInput(e.target.value)}
+                onChange={(e) => {handleInputChange(e)}}
               />
               <InputGroupAddon align="block-end">
                 <Select
@@ -106,21 +133,29 @@ const Hero = () => {
                   </SelectContent>
                 </Select>
                 <InputGroupButton
-                  className="ml-auto"
+                  className="ml-auto cursor-pointer"
                   size="sm"
                   variant="default"
                   onClick={createProject}
                 >
-                  {loading ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
+                  {loading ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <Send className="size-4" />
+                  )}
                 </InputGroupButton>
               </InputGroupAddon>
             </InputGroup>
+            {error && (
+              <p className="text-red-500 text-sm -mt-5">{error}</p>
+            )}
           </div>
           <div className="mt-4 text-center text-sm text-gray-500 flex gap-4 justify-center flex-wrap">
             {suggestions.map((suggestion: Suggestion) => (
               <span
                 key={suggestion.title}
-                onClick={() => setUserInput(suggestion.description)}
+                onClick={() => handleUserInput(suggestion.description)}
+                
                 className="text-secondary *:mr-2 rounded-2xl bg-secondary/10 px-2.5 border border-secondary/10 hover:border-secondary/50 transition-all duration-300 cursor-pointer py-1 text-xs font-medium "
               >
                 {suggestion.title}
