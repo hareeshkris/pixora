@@ -14,7 +14,7 @@ export type screenConfigType = {
   projectId: string;  
   screenId:string;
   screenName:string;
-  porpose:string;
+  purpose:string;
   screenDescription:string;
   code:string;
 };
