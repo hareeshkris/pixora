@@ -58,3 +58,40 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ msg: "Error" });
   }
 }
+
+export async function PUT(req: NextRequest) {
+  const { projectId, projectName, theme } = await req.json();
+
+  if (!projectId) {
+    return NextResponse.json(
+      { error: "Project ID is required" },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const data = await db
+      .update(projectsTable)
+      .set({
+        projectName,
+        theme,
+      })
+      .where(eq(projectsTable.projectId, projectId))
+      .returning();
+
+    if (data.length === 0) {
+      return NextResponse.json(
+        { error: "Project not found" },
+        { status: 404 },
+      );
+    }
+
+    return NextResponse.json(data[0]);
+  } catch (error) {
+    console.error("Failed to update project:", error);
+    return NextResponse.json(
+      { error: "Failed to update project" },
+      { status: 500 },
+    );
+  }
+}

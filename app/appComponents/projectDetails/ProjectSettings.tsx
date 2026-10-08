@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { projectDetailType } from "@/config/types";
+import { settingsContext } from "@/context/settingContext";
 import { CameraIcon, Share2Icon, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 type props = {
   projectDetails: projectDetailType | undefined;
@@ -17,13 +18,22 @@ const ProjectSettings = ({ projectDetails }: props) => {
   const [projectName, setProjectName] = useState<string>(
     projectDetails?.projectName ?? "",
   );
+  const { setSettingsDetails } = useContext(settingsContext);
+
   const [newScreenPrompt, setNewScreenPrompt] = useState<string>("");
 
   useEffect(() => {
     if (projectDetails) {
       setProjectName(projectDetails?.projectName ?? "");
+      setSelectedTheme(projectDetails?.theme as string);
     }
   }, [projectDetails]);
+
+  const onThemeSelect = (theme: string) => {
+    setSelectedTheme(theme);
+    setSettingsDetails((prev: any) => ({ ...prev, theme: theme }));
+  };
+
   return (
     <div className="w-[280px] flex flex-col gap-4 shrink-0  p-5 min-h-[calc(100vh-49px)] bg-white border-r border-t border-gray-200">
       <div className="w-full flex flex-col gap-1.5">
@@ -35,7 +45,13 @@ const ProjectSettings = ({ projectDetails }: props) => {
           placeholder="Enter project name... "
           className="placeholder:text-xs !rounded-sm border-secondary/20"
           value={projectName}
-          onChange={(e) => setProjectName(e.target.value)}
+          onChange={(e) => {
+            setProjectName(e.target.value);
+            setSettingsDetails((prev: any) => ({
+              ...prev,
+              projectName: e.target.value,
+            }));
+          }}
         />
       </div>
       <div className="w-full flex flex-col gap-1.5">
@@ -62,7 +78,7 @@ const ProjectSettings = ({ projectDetails }: props) => {
                   selectedTheme === theme.value ? "border-secondary" : ""
                 }`}
                 key={theme.value}
-                onClick={() => setSelectedTheme(theme.value)}
+                onClick={() => onThemeSelect(theme.value)}
               >
                 <p className="text-xs text-foreground font-medium mb-2">
                   {theme.label}

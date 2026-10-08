@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Provider from "./provider";
+import { Toaster } from "@/components/ui/toast";
 
 const appFont = DM_Sans({
   subsets: ["latin"],
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       >
         <body className="min-h-full flex flex-col bg-[#F5FBF4CC]">
           <Provider>{children}</Provider>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>
