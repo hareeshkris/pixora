@@ -8,8 +8,9 @@ import { isScreenCodeComplete } from "@/app/store";
 import { projectDetailType, screenConfigType } from "@/config/types";
 import axios from "axios";
 import { useParams, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { getCanvasLayout } from "@/app/appComponents/projectDetails/canvasLayout";
+import { settingsContext } from "@/context/settingContext";
 
 const ProjectDetailPage = () => {
   const [projectDetail, setProjectDetail] = useState<projectDetailType>();
@@ -18,6 +19,8 @@ const ProjectDetailPage = () => {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>();
+  
+  const { setSettingsDetails } =useContext(settingsContext);
 
   const params = useSearchParams();
   const routeParams = useParams();
@@ -77,6 +80,7 @@ const ProjectDetailPage = () => {
 
       setProjectDetail(detail);
       setScreenConfig(screens);
+      setSettingsDetails(detail);
 
       if (screens.length === 0 && !configGenerationStarted.current) {
         configGenerationStarted.current = true;
@@ -93,6 +97,7 @@ const ProjectDetailPage = () => {
 
           setProjectDetail(refreshed.detail ?? detail);
           setScreenConfig(refreshed.screens);
+          setSettingsDetails(refreshed.detail ?? detail)
         }
       }
     } catch (err) {
