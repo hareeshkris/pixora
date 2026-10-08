@@ -25,7 +25,7 @@ const ProjectSettings = ({ projectDetails }: props) => {
     }
   }, [projectDetails]);
   return (
-    <div className="w-[280px] flex flex-col gap-4 shrink-0  p-5 min-h-[calc(100vh-49px)] bg-gray-50 border-r border-gray-200">
+    <div className="w-[280px] flex flex-col gap-4 shrink-0  p-5 min-h-[calc(100vh-49px)] bg-white border-r border-t border-gray-200">
       <div className="w-full flex flex-col gap-1.5">
         <h4 className="text-sm font-semibold">Settings</h4>
       </div>

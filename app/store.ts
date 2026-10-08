@@ -9,231 +9,268 @@ export const suggestions: Suggestion[] = [
     icon: "✈️",
     title: "Travel Planner App",
     description:
-      "Create a travel planner app where users can plan trips, organize destinations, manage itineraries, and track their travel activities.",
+      "Design a complete travel planning application that helps users discover destinations, create trips, build day-by-day itineraries, organize flights and hotel bookings, save places to visit, manage travel expenses, and track upcoming activities. Include screens for destination discovery, trip overview, itinerary planning, booking details, saved places, expenses, notifications, and user profile.",
   },
-  {
-    icon: "📚",
-    title: "AI Learning Platform",
-    description:
-      "Create an AI-powered learning platform where users can discover courses, learn with personalized content, track their progress, and get AI assistance.",
-  },
+
+  // {
+  //   icon: "📚",
+  //   title: "AI Learning Platform",
+  //   description:
+  //     "Design an AI-powered learning platform where users can discover courses, enroll in learning paths, watch lessons, read study materials, complete quizzes and assignments, track their learning progress, and receive personalized recommendations from AI. Include screens for course discovery, course details, video lessons, AI tutor, quizzes, progress dashboard, achievements, notifications, and profile.",
+  // },
+
   {
     icon: "💳",
     title: "Finance Tracker",
     description:
-      "Create a personal finance tracker that helps users manage income and expenses, set budgets, monitor spending, and visualize their financial activity.",
+      "Design a modern personal finance management application that helps users track income, expenses, budgets, savings, subscriptions, and financial goals. Users should be able to view spending analytics, categorize transactions, set monthly budgets, monitor account balances, and receive useful financial insights. Include screens for dashboard, transactions, expense details, budgets, analytics, savings goals, subscriptions, notifications, and profile.",
   },
+
   {
     icon: "🛒",
     title: "E-Commerce Store",
     description:
-      "Create a modern e-commerce store where users can browse products, search and filter items, add products to a cart, and complete purchases.",
+      "Design a complete modern e-commerce shopping application where users can discover products, search and filter items, view detailed product information, select variants, add products to their cart and wishlist, complete checkout, track orders, and manage their account. Include screens for home, product categories, search results, product details, wishlist, cart, checkout, payment, order tracking, order history, and profile.",
   },
+
   {
     icon: "📅",
     title: "Smart To-Do Planner",
     description:
-      "Create a smart to-do planner that helps users organize tasks, set priorities and deadlines, track progress, and manage their daily schedule.",
+      "Design a smart productivity and task management application that helps users organize their daily work, create tasks, set priorities and deadlines, manage projects, and track their productivity. Include AI-powered task suggestions and smart planning features that help users organize their schedule. Create screens for dashboard, task list, task creation, calendar, project details, priorities, productivity analytics, reminders, and user profile.",
   },
-//   {
-//     icon: "🍔",
-//     title: "Food Delivery App",
-//     description:
-//       "Create a food delivery app where users can discover restaurants, browse menus, add food to their cart, place orders, and track deliveries.",
-//   },
-//   {
-//     icon: "🧒",
-//     title: "Kids Learning App",
-//     description:
-//       "Create an interactive kids learning app with fun educational activities, games, lessons, quizzes, and progress tracking for young learners.",
-//   },
+
+  {
+    icon: "🍔",
+    title: "Food Delivery App",
+    description:
+      "Design a modern food delivery application that allows users to discover nearby restaurants, browse menus, search for dishes, customize meals, add items to a cart, place orders, make payments, and track deliveries in real time. Include screens for home, restaurant discovery, restaurant details, menu, food item details, cart, checkout, payment, live order tracking, order history, favorites, offers, and profile.",
+  },
+
+  // {
+  //   icon: "🧒",
+  //   title: "Kids Learning App",
+  //   description:
+  //     "Design a colorful and engaging educational application for children that makes learning fun through interactive lessons, games, quizzes, stories, and activities. Parents should also be able to monitor their child's learning progress, completed activities, achievements, and daily learning time. Include screens for child dashboard, subjects, lesson details, interactive activities, quizzes, rewards, achievements, progress reports, parent dashboard, notifications, and profile.",
+  // },
 ];
 
 export const THEMES: Record<string, any> = {
-  NEON_FLUX: {
-    background: "#080A12",
-    foreground: "#F7F8FF",
+  SKYLINE: {
+    background: "#F7F9FC",
+    foreground: "#172033",
 
-    card: "#101421",
-    cardForeground: "#F7F8FF",
+    card: "#FFFFFF",
+    cardForeground: "#172033",
 
-    popover: "#101421",
-    popoverForeground: "#F7F8FF",
+    popover: "#FFFFFF",
+    popoverForeground: "#172033",
 
-    primary: "#FF2DAA",
-    primaryRgb: "255, 45, 170",
+    primary: "#4F46E5",
+    primaryRgb: "79, 70, 229",
     primaryForeground: "#FFFFFF",
 
-    secondary: "#25102A",
-    secondaryForeground: "#FFD9F2",
+    secondary: "#EEF2FF",
+    secondaryForeground: "#3730A3",
 
-    muted: "#171A27",
-    mutedForeground: "#A7ADBE",
+    muted: "#F1F3F7",
+    mutedForeground: "#667085",
 
-    accent: "#7CFF00",
-    accentForeground: "#071000",
+    accent: "#E0E7FF",
+    accentForeground: "#3730A3",
 
-    destructive: "#FF3B30",
+    destructive: "#DC2626",
     destructiveForeground: "#FFFFFF",
 
-    border: "#352040",
-    input: "#352040",
-    ring: "#FF2DAA",
+    border: "#E2E6EF",
+    input: "#D9DEE8",
+    ring: "#4F46E5",
   },
 
-  ELECTRIC_MINT: {
-    background: "#071210",
-    foreground: "#F2FFFB",
+  OCEAN_BREEZE: {
+    background: "#F4FAFC",
+    foreground: "#102A35",
 
-    card: "#0D1D19",
-    cardForeground: "#F2FFFB",
+    card: "#FFFFFF",
+    cardForeground: "#102A35",
 
-    popover: "#0D1D19",
-    popoverForeground: "#F2FFFB",
+    popover: "#FFFFFF",
+    popoverForeground: "#102A35",
 
-    primary: "#00E5A0",
-    primaryRgb: "0, 229, 160",
-    primaryForeground: "#03130E",
-
-    secondary: "#103B31",
-    secondaryForeground: "#C8FFF0",
-
-    muted: "#12251F",
-    mutedForeground: "#8EB7AA",
-
-    accent: "#00D9FF",
-    accentForeground: "#001114",
-
-    destructive: "#FF4664",
-    destructiveForeground: "#FFFFFF",
-
-    border: "#1D4D40",
-    input: "#1D4D40",
-    ring: "#00E5A0",
-  },
-
-  ELECTRIC_CANDY: {
-    background: "#120A18",
-    foreground: "#FFF8FF",
-
-    card: "#1D1027",
-    cardForeground: "#FFF8FF",
-
-    popover: "#1D1027",
-    popoverForeground: "#FFF8FF",
-
-    primary: "#D946EF",
-    primaryRgb: "217, 70, 239",
+    primary: "#0891B2",
+    primaryRgb: "8, 145, 178",
     primaryForeground: "#FFFFFF",
 
-    secondary: "#361442",
-    secondaryForeground: "#F9D8FF",
+    secondary: "#E6F7FB",
+    secondaryForeground: "#0E7490",
 
-    muted: "#25152F",
-    mutedForeground: "#B89BC2",
+    muted: "#EEF6F8",
+    mutedForeground: "#64808A",
 
-    accent: "#FFEA00",
-    accentForeground: "#171000",
+    accent: "#CFFAFE",
+    accentForeground: "#155E75",
 
-    destructive: "#FF3864",
+    destructive: "#E11D48",
     destructiveForeground: "#FFFFFF",
 
-    border: "#50215D",
-    input: "#50215D",
-    ring: "#D946EF",
+    border: "#D8E8EC",
+    input: "#CBDDE2",
+    ring: "#0891B2",
   },
 
-  CYBER_LIME: {
-    background: "#090D08",
-    foreground: "#F8FFF3",
+  LAVENDER_MIST: {
+    background: "#FAF9FF",
+    foreground: "#27233A",
 
-    card: "#121A0F",
-    cardForeground: "#F8FFF3",
+    card: "#FFFFFF",
+    cardForeground: "#27233A",
 
-    popover: "#121A0F",
-    popoverForeground: "#F8FFF3",
+    popover: "#FFFFFF",
+    popoverForeground: "#27233A",
 
-    primary: "#B7F000",
-    primaryRgb: "183, 240, 0",
-    primaryForeground: "#0A1000",
-
-    secondary: "#25350E",
-    secondaryForeground: "#E8FFC2",
-
-    muted: "#181F13",
-    mutedForeground: "#A5B58D",
-
-    accent: "#00F5D4",
-    accentForeground: "#001410",
-
-    destructive: "#FF4057",
-    destructiveForeground: "#FFFFFF",
-
-    border: "#35491A",
-    input: "#35491A",
-    ring: "#B7F000",
-  },
-
-  CORAL_POP: {
-    background: "#12090A",
-    foreground: "#FFF8F7",
-
-    card: "#211113",
-    cardForeground: "#FFF8F7",
-
-    popover: "#211113",
-    popoverForeground: "#FFF8F7",
-
-    primary: "#FF4F6D",
-    primaryRgb: "255, 79, 109",
+    primary: "#7C3AED",
+    primaryRgb: "124, 58, 237",
     primaryForeground: "#FFFFFF",
 
-    secondary: "#3A171C",
-    secondaryForeground: "#FFDDE2",
+    secondary: "#F3E8FF",
+    secondaryForeground: "#6B21A8",
 
-    muted: "#281518",
-    mutedForeground: "#C39DA4",
+    muted: "#F5F3FA",
+    mutedForeground: "#746F85",
 
-    accent: "#FFB800",
-    accentForeground: "#1A1000",
+    accent: "#EDE9FE",
+    accentForeground: "#6D28D9",
 
-    destructive: "#FF1744",
+    destructive: "#E11D48",
     destructiveForeground: "#FFFFFF",
 
-    border: "#54252D",
-    input: "#54252D",
-    ring: "#FF4F6D",
+    border: "#E7E1F2",
+    input: "#DDD6E9",
+    ring: "#7C3AED",
   },
 
-  ARCTIC_BLOOM: {
-    background: "#071014",
-    foreground: "#F3FCFF",
+  PEACH_BLOSSOM: {
+    background: "#FFF9F7",
+    foreground: "#30201D",
 
-    card: "#0D1A20",
-    cardForeground: "#F3FCFF",
+    card: "#FFFFFF",
+    cardForeground: "#30201D",
 
-    popover: "#0D1A20",
-    popoverForeground: "#F3FCFF",
+    popover: "#FFFFFF",
+    popoverForeground: "#30201D",
 
-    primary: "#00B8D9",
-    primaryRgb: "0, 184, 217",
-    primaryForeground: "#001216",
+    primary: "#EA580C",
+    primaryRgb: "234, 88, 12",
+    primaryForeground: "#FFFFFF",
 
-    secondary: "#10333C",
-    secondaryForeground: "#C8F7FF",
+    secondary: "#FFF1EB",
+    secondaryForeground: "#C2410C",
 
-    muted: "#12242A",
-    mutedForeground: "#91B5BE",
+    muted: "#FDF3EF",
+    mutedForeground: "#8A6F68",
 
-    accent: "#FF4FD8",
-    accentForeground: "#1A0013",
+    accent: "#FFEDD5",
+    accentForeground: "#9A3412",
 
-    destructive: "#FF4568",
+    destructive: "#DC2626",
     destructiveForeground: "#FFFFFF",
 
-    border: "#1D4B57",
-    input: "#1D4B57",
-    ring: "#00B8D9",
+    border: "#F0DDD5",
+    input: "#E8D1C8",
+    ring: "#EA580C",
+  },
+
+  MINT_FRESH: {
+    background: "#F5FBF8",
+    foreground: "#172B25",
+
+    card: "#FFFFFF",
+    cardForeground: "#172B25",
+
+    popover: "#FFFFFF",
+    popoverForeground: "#172B25",
+
+    primary: "#059669",
+    primaryRgb: "5, 150, 105",
+    primaryForeground: "#FFFFFF",
+
+    secondary: "#E8F8F1",
+    secondaryForeground: "#047857",
+
+    muted: "#EFF7F3",
+    mutedForeground: "#668078",
+
+    accent: "#D1FAE5",
+    accentForeground: "#065F46",
+
+    destructive: "#DC2626",
+    destructiveForeground: "#FFFFFF",
+
+    border: "#D8E9E1",
+    input: "#C9DED5",
+    ring: "#059669",
+  },
+
+  ROSE_CREAM: {
+    background: "#FFF8FA",
+    foreground: "#321F27",
+
+    card: "#FFFFFF",
+    cardForeground: "#321F27",
+
+    popover: "#FFFFFF",
+    popoverForeground: "#321F27",
+
+    primary: "#DB2777",
+    primaryRgb: "219, 39, 119",
+    primaryForeground: "#FFFFFF",
+
+    secondary: "#FCE7F3",
+    secondaryForeground: "#BE185D",
+
+    muted: "#F9F1F4",
+    mutedForeground: "#866F78",
+
+    accent: "#FBCFE8",
+    accentForeground: "#9D174D",
+
+    destructive: "#DC2626",
+    destructiveForeground: "#FFFFFF",
+
+    border: "#EEDBE3",
+    input: "#E3CBD5",
+    ring: "#DB2777",
+  },
+
+  SUNLIT: {
+    background: "#FFFCF4",
+    foreground: "#2D281B",
+
+    card: "#FFFFFF",
+    cardForeground: "#2D281B",
+
+    popover: "#FFFFFF",
+    popoverForeground: "#2D281B",
+
+    primary: "#D97706",
+    primaryRgb: "217, 119, 6",
+    primaryForeground: "#FFFFFF",
+
+    secondary: "#FEF3C7",
+    secondaryForeground: "#92400E",
+
+    muted: "#FAF6E9",
+    mutedForeground: "#81785F",
+
+    accent: "#FDE68A",
+    accentForeground: "#78350F",
+
+    destructive: "#DC2626",
+    destructiveForeground: "#FFFFFF",
+
+    border: "#EDE3C8",
+    input: "#E1D5B7",
+    ring: "#D97706",
   },
 };
 
@@ -253,3 +290,65 @@ export const THEME_OPTIONS = THEME_NAMES.map((name) => ({
   label: formatThemeName(name),
 }));
 
+export function isScreenCodeComplete(code: unknown) {
+  if (typeof code !== "string") return false;
+  const trimmed = code.trim();
+  if (trimmed.length < 300) return false;
+  const openDivs = (trimmed.match(/<div[\s>]/gi) ?? []).length;
+  const closeDivs = (trimmed.match(/<\/div\s*>/gi) ?? []).length;
+  if (openDivs === 0 || openDivs !== closeDivs) return false;
+  if (!/<\/[a-z][\w-]*\s*>$/i.test(trimmed)) return false;
+  // Ends mid-tag, e.g. `</button` or `placeholder="Search...`
+  if (/<\/?[a-z][^>]*$/i.test(trimmed)) return false;
+  return true;
+}
+
+export function themeToCssVars(theme: string | any) {
+  const t =
+    typeof theme === "string"
+      ? THEMES[theme]
+      : theme && typeof theme === "object" && theme.background
+        ? theme
+        : undefined;
+
+  // Fall back to first theme so iframe never gets `--background: undefined`
+  // (happens when projectDetail is still loading or theme is an unknown name).
+  const resolved = t ?? THEMES[THEME_OPTIONS[0].value];
+
+  if (!resolved) return "";
+
+  return `
+    :root {
+      --background: ${resolved.background};
+      --foreground: ${resolved.foreground};
+
+      --card: ${resolved.card};
+      --card-foreground: ${resolved.cardForeground};
+
+      --popover: ${resolved.popover};
+      --popover-foreground: ${resolved.popoverForeground};
+
+      --primary: ${resolved.primary};
+      --primary-rgb: ${resolved.primaryRgb};
+      --primary-foreground: ${resolved.primaryForeground};
+
+      --secondary: ${resolved.secondary};
+      --secondary-foreground: ${resolved.secondaryForeground};
+
+      --muted: ${resolved.muted};
+      --muted-foreground: ${resolved.mutedForeground};
+
+      --accent: ${resolved.accent};
+      --accent-foreground: ${resolved.accentForeground};
+
+      --destructive: ${resolved.destructive};
+      --destructive-foreground: ${resolved.destructiveForeground};
+
+      --border: ${resolved.border};
+      --input: ${resolved.input};
+      --ring: ${resolved.ring};
+
+      --radius: ${resolved.radius ?? "0.5rem"};
+    }
+  `;
+}
