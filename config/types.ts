@@ -7,6 +7,8 @@ export type projectDetailType = {
   userId: string;
   userInput: string;
   projectName?:string;
+  projectVisualDescription?:string;
+  theme?:string;
 };
 
 export type screenConfigType = {

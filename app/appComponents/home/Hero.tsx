@@ -77,7 +77,7 @@ const Hero = () => {
 
     console.log(response.data);
     setLoading(false);
-    route.push(`/project/${projectId}`);
+    route.push(`/project/${projectId}?device=${selectedType}`);
     setUserInput("");
   };
 
@@ -101,7 +101,7 @@ const Hero = () => {
             >
               <InputGroupTextarea
                 data-slot="input-group-control"
-                className="flex  field-sizing-content min-h-32 w-full resize-none rounded-md bg-transparent px-4 py-4 text-base  outline-none md:text-base placeholder:italic placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                className="flex  field-sizing-content min-h-32 max-h-44 overflow-y-auto  w-full resize-none rounded-md bg-transparent px-4 py-4 text-base  outline-none md:text-base placeholder:italic placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 placeholder="Futuristic sustainable electric vehicle landing page with sleek 3D renders, neon green accents, and interactive specs..."
                 value={userInput}
                 // onChange={(e) => setUserInput(e.target.value)}

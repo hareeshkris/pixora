@@ -3,30 +3,61 @@
 import ProjectCanvas from "@/app/appComponents/projectDetails/ProjectCanvas";
 import ProjectHeader from "@/app/appComponents/projectDetails/ProjectHeader";
 import ProjectSettings from "@/app/appComponents/projectDetails/ProjectSettings";
+import { ProjectDetailSkeleton } from "@/app/appComponents/projectDetails/ProjectSkeletons";
+import { isScreenCodeComplete } from "@/app/store";
 import { projectDetailType, screenConfigType } from "@/config/types";
 import axios from "axios";
-import { Loader2 } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { getCanvasLayout } from "@/app/appComponents/projectDetails/canvasLayout";
 
 const ProjectDetailPage = () => {
   const [projectDetail, setProjectDetail] = useState<projectDetailType>();
 
   const [screenConfig, setScreenConfig] = useState<screenConfigType[]>([]);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>();
 
-  const { projectId } = useParams();
+  const params = useSearchParams();
+  const routeParams = useParams();
+  const deviceFromUrl = params.get("device") as "website" | "mobile" | null;
+  const isMobile = deviceFromUrl
+    ? deviceFromUrl === "mobile"
+    : projectDetail?.device === "mobile";
+  const layout = getCanvasLayout(isMobile);
+  const projectIdParam = routeParams.projectId;
+  const projectId = Array.isArray(projectIdParam)
+    ? projectIdParam[0]
+    : projectIdParam;
 
   const configGenerationStarted = useRef(false);
   const uiGenerationStarted = useRef(false);
+  const activeProjectId = useRef<string | undefined>(undefined);
 
   useEffect(() => {
     if (!projectId) return;
+    activeProjectId.current = projectId;
+    configGenerationStarted.current = false;
+    uiGenerationStarted.current = false;
+    setProjectDetail(undefined);
+    setScreenConfig([]);
 
     getProjectDetails();
+
+    return () => {
+      activeProjectId.current = undefined;
+    };
   }, [projectId]);
+
+  const fetchProject = async () => {
+    const response = await axios.get(`/api/project?projectId=${projectId}`);
+
+    return {
+      detail: response.data.projectDetail as projectDetailType | undefined,
+      screens: (response.data.screenConfig ?? []) as screenConfigType[],
+    };
+  };
 
   const getProjectDetails = async () => {
     if (!projectId) return;
@@ -35,28 +66,38 @@ const ProjectDetailPage = () => {
     setError(undefined);
 
     try {
-      const response = await axios.get(`/api/project?projectId=${projectId}`);
+      const { detail, screens } = await fetchProject();
 
-      console.log("Project response:", response.data);
+      if (activeProjectId.current !== projectId) return;
 
-      const detail: projectDetailType = response.data.projectDetail;
-
-      const screens: screenConfigType[] = response.data.screenConfig ?? [];
+      if (!detail) {
+        setError("Project not found or you don't have access to it");
+        return;
+      }
 
       setProjectDetail(detail);
       setScreenConfig(screens);
 
-      // Generate screen configuration if it doesn't exist
       if (screens.length === 0 && !configGenerationStarted.current) {
         configGenerationStarted.current = true;
 
         const generatedConfig = await generateScreenConfig(detail);
 
+        if (activeProjectId.current !== projectId) return;
+
         if (generatedConfig?.screens) {
-          setScreenConfig(generatedConfig.screens);
+   
+          const refreshed = await fetchProject();
+
+          if (activeProjectId.current !== projectId) return;
+
+          setProjectDetail(refreshed.detail ?? detail);
+          setScreenConfig(refreshed.screens);
         }
       }
     } catch (err) {
+      if (activeProjectId.current !== projectId) return;
+
       console.error("Project loading error:", err);
 
       setError(
@@ -65,7 +106,7 @@ const ProjectDetailPage = () => {
           : "Failed to load project",
       );
     } finally {
-      setLoading(false);
+      if (activeProjectId.current === projectId) setLoading(false);
     }
   };
 
@@ -77,18 +118,16 @@ const ProjectDetailPage = () => {
         userInput: detail.userInput,
       });
 
-      const generatedScreenConfig = response.data.jsonAIResult;
+      return response.data.jsonAIResult;
+    } catch (err) {
+      if (activeProjectId.current !== projectId) return null;
 
-      console.log(generatedScreenConfig, "generated screen config");
+      console.error("Failed to generate screen config:", err);
 
-      return generatedScreenConfig;
-    } catch (error) {
-      console.error("Failed to generate screen config:", error);
-
-      if (axios.isAxiosError(error)) {
+      if (axios.isAxiosError(err)) {
         setError(
-          error.response?.data?.error ||
-            error.message ||
+          err.response?.data?.error ||
+            err.message ||
             "Failed to generate screen config",
         );
       } else {
@@ -100,83 +139,109 @@ const ProjectDetailPage = () => {
   };
 
   useEffect(() => {
-    if (!projectDetail) return;
-    if (!screenConfig.length) return;
-
+    if (!projectDetail || !screenConfig.length) return;
+    if (!projectId) return;
+    if (projectDetail.projectId !== projectId) return;
     if (uiGenerationStarted.current) return;
+    if (!screenConfig.some((screen) => !isScreenCodeComplete(screen.code)))
+      return;
 
     uiGenerationStarted.current = true;
 
     generateUIScreen();
-  }, [projectDetail, screenConfig]);
+  }, [projectDetail, screenConfig, projectId]);
 
   const generateUIScreen = async () => {
     setLoading(true);
 
+    const failedScreens: string[] = [];
+
     try {
       for (const screen of screenConfig) {
-        // Don't regenerate existing screens
-        if (screen.code) continue;
+        if (isScreenCodeComplete(screen.code)) continue;
+        if (activeProjectId.current !== projectId) return;
 
-        console.log(`Generating UI for: ${screen.screenName}`);
+        try {
+          const response = await axios.post("/api/generate-screen", {
+            projectId,
+            screenId: screen.screenId,
+            screenName: screen.screenName,
+            purpose: screen.purpose,
+            screenDescription: screen.screenDescription,
+            theme: projectDetail?.theme,
+            projectVisualDescription: projectDetail?.projectVisualDescription,
+          });
 
-        const response = await axios.post("/api/generate-screen", {
-          projectId,
-          screenId: screen.screenId,
-          screenName: screen.screenName,
-          purpose: screen.purpose,
-          screenDescription: screen.screenDescription,
-        });
+          if (activeProjectId.current !== projectId) return;
 
-        console.log(response.data, "screen ui-ux");
+          const updatedScreen = response.data as screenConfigType | null;
 
-        setScreenConfig((prev) =>
-          prev.map((item) =>
-            item.screenId === screen.screenId
-              ? {
-                  ...item,
-                  ...response.data,
-                }
-              : item,
-          ),
-        );
+          if (!isScreenCodeComplete(updatedScreen?.code)) {
+            failedScreens.push(screen.screenName);
+            continue;
+          }
+
+          setScreenConfig((prev) =>
+            prev.map((item) =>
+              item.screenId === screen.screenId
+                ? { ...item, ...updatedScreen }
+                : item,
+            ),
+          );
+        } catch (screenError) {
+          console.error(
+            `Screen generation failed for "${screen.screenName}":`,
+            screenError,
+          );
+
+          const reason = axios.isAxiosError(screenError)
+            ? screenError.response?.data?.error || screenError.message
+            : null;
+
+          failedScreens.push(
+            reason ? `${screen.screenName} (${reason})` : screen.screenName,
+          );
+        }
       }
-    } catch (error) {
-      console.error("Screen generation failed:", error);
 
-      if (axios.isAxiosError(error)) {
-        setError(
-          error.response?.data?.error ||
-            error.message ||
-            "Screen generation failed",
-        );
+      if (failedScreens.length) {
+        uiGenerationStarted.current = false;
+
+        setError(`Failed to generate screen(s): ${failedScreens.join(", ")}`);
       }
     } finally {
-      setLoading(false);
+      if (activeProjectId.current === projectId) setLoading(false);
     }
   };
 
+  const isInitialLoading = loading && screenConfig.length === 0;
+
   return (
     <div className="w-full flex flex-col gap-0">
-      <ProjectHeader />
+      {isInitialLoading ? (
+        <ProjectDetailSkeleton screenCount={2} isMobile={isMobile} />
+      ) : (
+        <>
+          <ProjectHeader />
 
-      {loading && (
-        <div className="absolute inset-0 w-full h-full bg-white flex items-center justify-center z-50">
-          <Loader2 className="animate-spin size-6" />
-        </div>
+          {error && (
+            <div className="w-full px-4 py-2 text-sm text-red-600 bg-red-50 border-b border-red-200">
+              {error}
+            </div>
+          )}
+
+          <div className="flex items-start gap-0">
+            <ProjectSettings projectDetails={projectDetail} />
+
+            <ProjectCanvas
+              projectDetails={projectDetail}
+              screenConfigs={screenConfig}
+              loading={loading}
+              layout={layout}
+            />
+          </div>
+        </>
       )}
-
-      {error && (
-        <div className="w-full px-4 py-2 text-sm text-red-600 bg-red-50 border-b border-red-200">
-          {error}
-        </div>
-      )}
-
-      <div className="flex items-start gap-0">
-        <ProjectSettings projectDetails={projectDetail} />
-
-        <ProjectCanvas />
-      </div>
     </div>
   );
 };

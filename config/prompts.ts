@@ -82,8 +82,11 @@ NO JavaScript, NO canvas — SVG ONLY for charts
 Do NOT output <html>, <head>, <body>, <script> or <style> tags
 
 Images rules:
-Avatars → https://i.pravatar.cc/200 (append ?img=1 to ?img=70 for variety)
-Other images → searchUnsplash ONLY (never invent image URLs)
+Avatars → https://i.pravatar.cc/150?img=N (N = 1 to 70 for variety)
+Other images → https://picsum.photos/seed/{topic-keyword}/800/600 (use a
+different seed per image, e.g. /seed/headphones/800/600; adjust dimensions
+like /600/400 for the layout). NEVER invent images.unsplash.com or other
+guessed URLs — they 404 and render as broken images.
 Always add descriptive alt text and use object-cover with fixed aspect ratios
 
 Theme variables are PREDEFINED by parent — NEVER redeclare them
@@ -95,6 +98,10 @@ text-[var(--muted-foreground)]
 border-[var(--border)]
 bg-[var(--primary)] / text-[var(--primary-foreground)]
 bg-[var(--accent)] / text-[var(--accent-foreground)]
+FORBIDDEN: never append /opacity to a var() color (e.g. bg-[var(--background)/95]
+is INVALID — Play CDN emits rgb(var(--background)/...) but the var holds a hex
+value, so the rule is dropped and the element renders transparent). For
+translucent bars use solid bg-[var(--background)] + backdrop-blur-md.
 
 User visual instructions ALWAYS override default rules
 
