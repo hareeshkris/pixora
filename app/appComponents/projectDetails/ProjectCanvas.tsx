@@ -24,7 +24,6 @@ const ProjectCanvas = ({
   layout,
 }: props) => {
   const [panningEnabled, setPanningEnabled] = useState<boolean>(true);
-  //  const { zoomIn, zoomOut, resetTransform } = useControls();
   const { screenWidth, screenHeight } = layout;
   const Controls = () => {
     const { zoomIn, zoomOut, resetTransform } = useControls();
@@ -65,13 +64,13 @@ const ProjectCanvas = ({
       >
         <Controls />
         <TransformComponent wrapperStyle={{ width: "100%", height: "100%" }}>
-          {loading && screenConfigs.length === 0 ? (
+          {screenConfigs.length === 0 ? (
             <CanvasSkeletonViewport
               count={layout.isMobile ? 1 : 2}
               layout={layout}
             />
           ) : (
-            screenConfigs.map((screen: any, index: number) => (
+            screenConfigs.map((screen: screenConfigType, index: number) => (
               <ProjectScreen
                 key={screen.screenId ?? index}
                 x={getScreenX(index, layout)}
@@ -80,6 +79,7 @@ const ProjectCanvas = ({
                 y={0}
                 setPanningEnabled={setPanningEnabled}
                 screen={screen.code}
+                screenId={screen.screenId}
                 projectDetail={projectDetails}
                 isLoading={!isScreenCodeComplete(screen.code)}
                 screenName={screen.screenName}

@@ -56,224 +56,506 @@ export const suggestions: Suggestion[] = [
 ];
 
 export const THEMES: Record<string, any> = {
-  SKYLINE: {
-    background: "#F7F9FC",
-    foreground: "#172033",
+  // ---------- LIGHT THEMES ----------
+
+  SKY_BLUE: {
+    background: "#F5F9FF",
+    foreground: "#0F2038",
 
     card: "#FFFFFF",
-    cardForeground: "#172033",
+    cardForeground: "#0F2038",
 
     popover: "#FFFFFF",
-    popoverForeground: "#172033",
+    popoverForeground: "#0F2038",
 
-    primary: "#4F46E5",
-    primaryRgb: "79, 70, 229",
+    primary: "#2563EB",
+    primaryRgb: "37, 99, 235",
     primaryForeground: "#FFFFFF",
 
-    secondary: "#EEF2FF",
-    secondaryForeground: "#3730A3",
+    secondary: "#E5EEFF",
+    secondaryForeground: "#1E40AF",
 
-    muted: "#F1F3F7",
-    mutedForeground: "#667085",
+    muted: "#EEF3FA",
+    mutedForeground: "#5F7089",
 
-    accent: "#E0E7FF",
-    accentForeground: "#3730A3",
+    accent: "#DBEAFE",
+    accentForeground: "#1E3A8A",
 
     destructive: "#DC2626",
     destructiveForeground: "#FFFFFF",
 
-    border: "#E2E6EF",
-    input: "#D9DEE8",
-    ring: "#4F46E5",
+    border: "#DCE5F2",
+    input: "#CFDAEA",
+    ring: "#2563EB",
   },
 
-  OCEAN_BREEZE: {
-    background: "#F4FAFC",
-    foreground: "#102A35",
+  TEAL_LAGOON: {
+    background: "#F3FBFA",
+    foreground: "#0F2A28",
 
     card: "#FFFFFF",
-    cardForeground: "#102A35",
+    cardForeground: "#0F2A28",
 
     popover: "#FFFFFF",
-    popoverForeground: "#102A35",
+    popoverForeground: "#0F2A28",
 
-    primary: "#0891B2",
-    primaryRgb: "8, 145, 178",
+    primary: "#0D9488",
+    primaryRgb: "13, 148, 136",
     primaryForeground: "#FFFFFF",
 
-    secondary: "#E6F7FB",
-    secondaryForeground: "#0E7490",
+    secondary: "#E0F7F4",
+    secondaryForeground: "#0F766E",
 
-    muted: "#EEF6F8",
-    mutedForeground: "#64808A",
+    muted: "#EBF5F3",
+    mutedForeground: "#5F7F7B",
 
-    accent: "#CFFAFE",
-    accentForeground: "#155E75",
+    accent: "#CCFBF1",
+    accentForeground: "#115E59",
 
     destructive: "#E11D48",
     destructiveForeground: "#FFFFFF",
 
-    border: "#D8E8EC",
-    input: "#CBDDE2",
-    ring: "#0891B2",
+    border: "#D3E8E5",
+    input: "#C3DDD9",
+    ring: "#0D9488",
   },
 
-  LAVENDER_MIST: {
-    background: "#FAF9FF",
-    foreground: "#27233A",
+  LIME_GARDEN: {
+    background: "#F9FDF2",
+    foreground: "#1F2A12",
 
     card: "#FFFFFF",
-    cardForeground: "#27233A",
+    cardForeground: "#1F2A12",
 
     popover: "#FFFFFF",
-    popoverForeground: "#27233A",
+    popoverForeground: "#1F2A12",
 
-    primary: "#7C3AED",
-    primaryRgb: "124, 58, 237",
+    primary: "#4D7C0F",
+    primaryRgb: "77, 124, 15",
     primaryForeground: "#FFFFFF",
 
-    secondary: "#F3E8FF",
-    secondaryForeground: "#6B21A8",
+    secondary: "#ECFCCB",
+    secondaryForeground: "#3F6212",
 
-    muted: "#F5F3FA",
-    mutedForeground: "#746F85",
+    muted: "#F3F7E8",
+    mutedForeground: "#747F5C",
 
-    accent: "#EDE9FE",
-    accentForeground: "#6D28D9",
-
-    destructive: "#E11D48",
-    destructiveForeground: "#FFFFFF",
-
-    border: "#E7E1F2",
-    input: "#DDD6E9",
-    ring: "#7C3AED",
-  },
-
-  PEACH_BLOSSOM: {
-    background: "#FFF9F7",
-    foreground: "#30201D",
-
-    card: "#FFFFFF",
-    cardForeground: "#30201D",
-
-    popover: "#FFFFFF",
-    popoverForeground: "#30201D",
-
-    primary: "#EA580C",
-    primaryRgb: "234, 88, 12",
-    primaryForeground: "#FFFFFF",
-
-    secondary: "#FFF1EB",
-    secondaryForeground: "#C2410C",
-
-    muted: "#FDF3EF",
-    mutedForeground: "#8A6F68",
-
-    accent: "#FFEDD5",
-    accentForeground: "#9A3412",
+    accent: "#D9F99D",
+    accentForeground: "#365314",
 
     destructive: "#DC2626",
     destructiveForeground: "#FFFFFF",
 
-    border: "#F0DDD5",
-    input: "#E8D1C8",
-    ring: "#EA580C",
+    border: "#E2EBCB",
+    input: "#D5E0B8",
+    ring: "#4D7C0F",
   },
 
-  MINT_FRESH: {
-    background: "#F5FBF8",
-    foreground: "#172B25",
+  CORAL_REEF: {
+    background: "#FFF8F6",
+    foreground: "#34201E",
 
     card: "#FFFFFF",
-    cardForeground: "#172B25",
+    cardForeground: "#34201E",
 
     popover: "#FFFFFF",
-    popoverForeground: "#172B25",
+    popoverForeground: "#34201E",
 
-    primary: "#059669",
-    primaryRgb: "5, 150, 105",
+    primary: "#E8503A",
+    primaryRgb: "232, 80, 58",
     primaryForeground: "#FFFFFF",
 
-    secondary: "#E8F8F1",
-    secondaryForeground: "#047857",
+    secondary: "#FFEBE6",
+    secondaryForeground: "#B93A27",
 
-    muted: "#EFF7F3",
-    mutedForeground: "#668078",
+    muted: "#FBF1EE",
+    mutedForeground: "#8A6C66",
 
-    accent: "#D1FAE5",
-    accentForeground: "#065F46",
+    accent: "#FFD9D0",
+    accentForeground: "#8F2A1B",
+
+    destructive: "#B91C1C",
+    destructiveForeground: "#FFFFFF",
+
+    border: "#F2DBD5",
+    input: "#E8CCC4",
+    ring: "#E8503A",
+  },
+
+  CRIMSON_SILK: {
+    background: "#FEF8F8",
+    foreground: "#2E1717",
+
+    card: "#FFFFFF",
+    cardForeground: "#2E1717",
+
+    popover: "#FFFFFF",
+    popoverForeground: "#2E1717",
+
+    primary: "#B91C1C",
+    primaryRgb: "185, 28, 28",
+    primaryForeground: "#FFFFFF",
+
+    secondary: "#FEE2E2",
+    secondaryForeground: "#991B1B",
+
+    muted: "#F8EFEF",
+    mutedForeground: "#7F6666",
+
+    accent: "#FECACA",
+    accentForeground: "#7F1D1D",
+
+    destructive: "#7F1D1D",
+    destructiveForeground: "#FFFFFF",
+
+    border: "#EDDADA",
+    input: "#E2CBCB",
+    ring: "#B91C1C",
+  },
+
+  SLATE_GRAPHITE: {
+    background: "#F8FAFC",
+    foreground: "#0F172A",
+
+    card: "#FFFFFF",
+    cardForeground: "#0F172A",
+
+    popover: "#FFFFFF",
+    popoverForeground: "#0F172A",
+
+    primary: "#334155",
+    primaryRgb: "51, 65, 85",
+    primaryForeground: "#FFFFFF",
+
+    secondary: "#E2E8F0",
+    secondaryForeground: "#1E293B",
+
+    muted: "#F1F5F9",
+    mutedForeground: "#64748B",
+
+    accent: "#CBD5E1",
+    accentForeground: "#0F172A",
 
     destructive: "#DC2626",
     destructiveForeground: "#FFFFFF",
 
-    border: "#D8E9E1",
-    input: "#C9DED5",
-    ring: "#059669",
+    border: "#E2E8F0",
+    input: "#CBD5E1",
+    ring: "#334155",
   },
 
-  ROSE_CREAM: {
-    background: "#FFF8FA",
-    foreground: "#321F27",
+  FUCHSIA_POP: {
+    background: "#FDF7FE",
+    foreground: "#2F1633",
 
     card: "#FFFFFF",
-    cardForeground: "#321F27",
+    cardForeground: "#2F1633",
 
     popover: "#FFFFFF",
-    popoverForeground: "#321F27",
+    popoverForeground: "#2F1633",
 
-    primary: "#DB2777",
-    primaryRgb: "219, 39, 119",
+    primary: "#C026D3",
+    primaryRgb: "192, 38, 211",
     primaryForeground: "#FFFFFF",
 
-    secondary: "#FCE7F3",
-    secondaryForeground: "#BE185D",
+    secondary: "#FAE8FF",
+    secondaryForeground: "#86198F",
 
-    muted: "#F9F1F4",
-    mutedForeground: "#866F78",
+    muted: "#F7EEF8",
+    mutedForeground: "#7E6A82",
 
-    accent: "#FBCFE8",
-    accentForeground: "#9D174D",
+    accent: "#F5D0FE",
+    accentForeground: "#701A75",
 
     destructive: "#DC2626",
     destructiveForeground: "#FFFFFF",
 
-    border: "#EEDBE3",
-    input: "#E3CBD5",
-    ring: "#DB2777",
+    border: "#EBD9EE",
+    input: "#DFC8E3",
+    ring: "#C026D3",
   },
 
-  SUNLIT: {
-    background: "#FFFCF4",
-    foreground: "#2D281B",
+  SAND_DUNE: {
+    background: "#FBF8F3",
+    foreground: "#2B2419",
 
     card: "#FFFFFF",
-    cardForeground: "#2D281B",
+    cardForeground: "#2B2419",
 
     popover: "#FFFFFF",
-    popoverForeground: "#2D281B",
+    popoverForeground: "#2B2419",
 
-    primary: "#D97706",
-    primaryRgb: "217, 119, 6",
+    primary: "#A16207",
+    primaryRgb: "161, 98, 7",
     primaryForeground: "#FFFFFF",
 
-    secondary: "#FEF3C7",
-    secondaryForeground: "#92400E",
+    secondary: "#F5EBDA",
+    secondaryForeground: "#713F12",
 
-    muted: "#FAF6E9",
-    mutedForeground: "#81785F",
+    muted: "#F4EFE6",
+    mutedForeground: "#7D735F",
 
-    accent: "#FDE68A",
-    accentForeground: "#78350F",
+    accent: "#EADBBE",
+    accentForeground: "#5C3A0B",
 
     destructive: "#DC2626",
     destructiveForeground: "#FFFFFF",
 
-    border: "#EDE3C8",
-    input: "#E1D5B7",
-    ring: "#D97706",
+    border: "#E6DCC8",
+    input: "#D9CCB1",
+    ring: "#A16207",
+  },
+
+  // ---------- DARK THEMES ----------
+
+  MIDNIGHT_INDIGO: {
+    background: "#0E1020",
+    foreground: "#E6E8FF",
+
+    card: "#151832",
+    cardForeground: "#E6E8FF",
+
+    popover: "#151832",
+    popoverForeground: "#E6E8FF",
+
+    primary: "#818CF8",
+    primaryRgb: "129, 140, 248",
+    primaryForeground: "#0E1020",
+
+    secondary: "#1E2250",
+    secondaryForeground: "#C7D2FE",
+
+    muted: "#1A1D3A",
+    mutedForeground: "#9AA0CC",
+
+    accent: "#2A2F6B",
+    accentForeground: "#E0E7FF",
+
+    destructive: "#F87171",
+    destructiveForeground: "#1A0B0B",
+
+    border: "#262A52",
+    input: "#2F3465",
+    ring: "#818CF8",
+  },
+
+  DEEP_OCEAN: {
+    background: "#07161C",
+    foreground: "#E0F4F8",
+
+    card: "#0D222B",
+    cardForeground: "#E0F4F8",
+
+    popover: "#0D222B",
+    popoverForeground: "#E0F4F8",
+
+    primary: "#22D3EE",
+    primaryRgb: "34, 211, 238",
+    primaryForeground: "#04222A",
+
+    secondary: "#12353F",
+    secondaryForeground: "#A5F3FC",
+
+    muted: "#0F2B34",
+    mutedForeground: "#86AAB4",
+
+    accent: "#164B59",
+    accentForeground: "#CFFAFE",
+
+    destructive: "#FB7185",
+    destructiveForeground: "#1A0B0B",
+
+    border: "#17353F",
+    input: "#1F4551",
+    ring: "#22D3EE",
+  },
+
+  ORCHID_NIGHT: {
+    background: "#120B1E",
+    foreground: "#F0E8FF",
+
+    card: "#1B122D",
+    cardForeground: "#F0E8FF",
+
+    popover: "#1B122D",
+    popoverForeground: "#F0E8FF",
+
+    primary: "#A78BFA",
+    primaryRgb: "167, 139, 250",
+    primaryForeground: "#150C26",
+
+    secondary: "#2A1B4A",
+    secondaryForeground: "#DDD0FF",
+
+    muted: "#231838",
+    mutedForeground: "#A596C4",
+
+    accent: "#3A2766",
+    accentForeground: "#EDE4FF",
+
+    destructive: "#FB7185",
+    destructiveForeground: "#1A0B0B",
+
+    border: "#2E2048",
+    input: "#3A2A5C",
+    ring: "#A78BFA",
+  },
+
+  EMBER_GLOW: {
+    background: "#1A0F0A",
+    foreground: "#FFEDE3",
+
+    card: "#261710",
+    cardForeground: "#FFEDE3",
+
+    popover: "#261710",
+    popoverForeground: "#FFEDE3",
+
+    primary: "#FB923C",
+    primaryRgb: "251, 146, 60",
+    primaryForeground: "#200F05",
+
+    secondary: "#3A2216",
+    secondaryForeground: "#FFD2B0",
+
+    muted: "#2F1D14",
+    mutedForeground: "#C09A84",
+
+    accent: "#4E2D1B",
+    accentForeground: "#FFE1CC",
+
+    destructive: "#F87171",
+    destructiveForeground: "#1A0B0B",
+
+    border: "#3D261A",
+    input: "#4C3122",
+    ring: "#FB923C",
+  },
+
+  FOREST_NIGHT: {
+    background: "#0A1510",
+    foreground: "#E3F5EA",
+
+    card: "#112119",
+    cardForeground: "#E3F5EA",
+
+    popover: "#112119",
+    popoverForeground: "#E3F5EA",
+
+    primary: "#34D399",
+    primaryRgb: "52, 211, 153",
+    primaryForeground: "#052016",
+
+    secondary: "#17332A",
+    secondaryForeground: "#A7F3D0",
+
+    muted: "#132A21",
+    mutedForeground: "#86AE9C",
+
+    accent: "#1E4A3A",
+    accentForeground: "#D1FAE5",
+
+    destructive: "#F87171",
+    destructiveForeground: "#1A0B0B",
+
+    border: "#1B3A2D",
+    input: "#244A3A",
+    ring: "#34D399",
+  },
+
+  ROSE_NOIR: {
+    background: "#190C13",
+    foreground: "#FFE8F1",
+
+    card: "#25121C",
+    cardForeground: "#FFE8F1",
+
+    popover: "#25121C",
+    popoverForeground: "#FFE8F1",
+
+    primary: "#F472B6",
+    primaryRgb: "244, 114, 182",
+    primaryForeground: "#24091A",
+
+    secondary: "#3B1B2D",
+    secondaryForeground: "#FBCFE8",
+
+    muted: "#301726",
+    mutedForeground: "#C291A9",
+
+    accent: "#522138",
+    accentForeground: "#FCE7F3",
+
+    destructive: "#F87171",
+    destructiveForeground: "#1A0B0B",
+
+    border: "#3F1E30",
+    input: "#502A3E",
+    ring: "#F472B6",
+  },
+
+  GOLDEN_DUSK: {
+    background: "#17130A",
+    foreground: "#FDF3D7",
+
+    card: "#231D0F",
+    cardForeground: "#FDF3D7",
+
+    popover: "#231D0F",
+    popoverForeground: "#FDF3D7",
+
+    primary: "#FBBF24",
+    primaryRgb: "251, 191, 36",
+    primaryForeground: "#231A03",
+
+    secondary: "#3A2F14",
+    secondaryForeground: "#FDE68A",
+
+    muted: "#2E2511",
+    mutedForeground: "#BFAE80",
+
+    accent: "#4F3F17",
+    accentForeground: "#FEF3C7",
+
+    destructive: "#F87171",
+    destructiveForeground: "#1A0B0B",
+
+    border: "#3D3216",
+    input: "#4D401E",
+    ring: "#FBBF24",
+  },
+
+  GRAPHITE_NIGHT: {
+    background: "#0B0D12",
+    foreground: "#E8EAF0",
+
+    card: "#12151C",
+    cardForeground: "#E8EAF0",
+
+    popover: "#12151C",
+    popoverForeground: "#E8EAF0",
+
+    primary: "#CBD5E1",
+    primaryRgb: "203, 213, 225",
+    primaryForeground: "#0B0D12",
+
+    secondary: "#1C212B",
+    secondaryForeground: "#CBD5E1",
+
+    muted: "#161A22",
+    mutedForeground: "#8B93A5",
+
+    accent: "#252B38",
+    accentForeground: "#F1F5F9",
+
+    destructive: "#F87171",
+    destructiveForeground: "#1A0B0B",
+
+    border: "#232834",
+    input: "#2E3442",
+    ring: "#CBD5E1",
   },
 };
-
 export const THEME_NAMES = Object.keys(THEMES);
 
 export const formatThemeName = (name: string) =>
@@ -352,3 +634,147 @@ export function themeToCssVars(theme: string | any) {
     }
   `;
 }
+
+
+
+export const htmlWrapper = ({
+  theme,
+  screen,
+}: {
+  theme: string;
+  screen: any | undefined;
+}) => {
+  return `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+          tailwind.config = {
+            theme: {
+              extend: {
+                fontFamily: {
+                  sans: [
+                    "Inter",
+                    "ui-sans-serif",
+                    "system-ui",
+                    "sans-serif",
+                  ],
+                },
+
+                colors: {
+                  background: "var(--background)",
+                  foreground: "var(--foreground)",
+
+                  card: "var(--card)",
+                  "card-foreground": "var(--card-foreground)",
+
+                  popover: "var(--popover)",
+                  "popover-foreground": "var(--popover-foreground)",
+
+                  primary: "var(--primary)",
+                  "primary-foreground": "var(--primary-foreground)",
+
+                  secondary: "var(--secondary)",
+                  "secondary-foreground": "var(--secondary-foreground)",
+
+                  muted: "var(--muted)",
+                  "muted-foreground": "var(--muted-foreground)",
+
+                  accent: "var(--accent)",
+                  "accent-foreground": "var(--accent-foreground)",
+
+                  border: "var(--border)",
+                  input: "var(--input)",
+                  ring: "var(--ring)",
+                },
+              },
+            },
+          };
+        </script>
+
+        <style>
+          ${themeToCssVars(theme)}
+
+          html,
+          body {
+            margin: 0;
+            padding: 0;
+            font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+            scrollbar-width: none;
+          }
+
+          body {
+            background-color: var(--background);
+            color: var(--foreground);
+            scrollbar-width: none;
+          }
+
+          img {
+            max-width: 100%;
+          }
+
+          .bg-\\[var\\(--background\\)\\] {
+            background-color: var(--background) !important;
+          }
+
+          .text-\\[var\\(--foreground\\)\\] {
+            color: var(--foreground) !important;
+          }
+
+          .bg-\\[var\\(--card\\)\\] {
+            background-color: var(--card) !important;
+          }
+
+          .text-\\[var\\(--card-foreground\\)\\] {
+            color: var(--card-foreground) !important;
+          }
+
+          .bg-\\[var\\(--primary\\)\\] {
+            background-color: var(--primary) !important;
+          }
+
+          .text-\\[var\\(--primary-foreground\\)\\] {
+            color: var(--primary-foreground) !important;
+          }
+
+          .bg-\\[var\\(--secondary\\)\\] {
+            background-color: var(--secondary) !important;
+          }
+
+          .text-\\[var\\(--secondary-foreground\\)\\] {
+            color: var(--secondary-foreground) !important;
+          }
+
+          .bg-\\[var\\(--muted\\)\\] {
+            background-color: var(--muted) !important;
+          }
+
+          .text-\\[var\\(--muted-foreground\\)\\] {
+            color: var(--muted-foreground) !important;
+          }
+
+          .bg-\\[var\\(--accent\\)\\] {
+            background-color: var(--accent) !important;
+          }
+
+          .text-\\[var\\(--accent-foreground\\)\\] {
+            color: var(--accent-foreground) !important;
+          }
+
+          .border-\\[var\\(--border\\)\\] {
+            border-color: var(--border) !important;
+          }
+        </style>
+      </head>
+
+      <body>
+        ${screen ?? ""}
+      </body>
+    </html>
+  `;
+};

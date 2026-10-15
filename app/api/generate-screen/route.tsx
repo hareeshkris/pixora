@@ -1,16 +1,13 @@
 import { db } from "@/config";
-import { openrouter } from "@/config/openrouter";
+import { gemini } from "@/config/gemini";
 import { GENERATION_SYSTEM_PROMPT } from "@/config/prompts";
 import { screenConfigTable } from "@/config/schema";
 import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
-const MODEL = "google/gemini-2.5-flash-lite";
-// A full screen mockup lands around 2.7k–3.5k completion tokens (including
-// reasoning). The old 4000 cap left almost no headroom, so longer screens got
-// cut off mid-markup and failed validation.
-const MAX_TOKENS = 8000;
-const MAX_ATTEMPTS = 2;
+const MODEL = "gemini-3.5-flash-lite";
+const MAX_TOKENS = 65536;
+const MAX_ATTEMPTS = 3;
 
 const stripFences = (raw: string) =>
   raw
@@ -19,7 +16,6 @@ const stripFences = (raw: string) =>
     .replace(/\s*```$/i, "")
     .trim();
 
-// Returns a rejection reason, or null when the markup is safe to persist.
 const findProblem = (code: string): string | null => {
   const openDivs = (code.match(/<div[\s>]/gi) ?? []).length;
   const closeDivs = (code.match(/<\/div\s*>/gi) ?? []).length;
@@ -38,42 +34,36 @@ type Attempt =
   | { ok: true; code: string; finishReason: string | null }
   | { ok: false; type: string; detail: string };
 
+const getGeminiErrorInfo = (error: unknown) => ({
+  message:
+    error instanceof Error ? error.message : "Unknown Gemini API error",
+  status:
+    typeof error === "object" &&
+    error !== null &&
+    "status" in error &&
+    typeof error.status === "number"
+      ? error.status
+      : null,
+});
+
 const generateAttempt = async (
   userInput: string,
+  retryFeedback?: string,
 ): Promise<Attempt> => {
-  const aiResult = await openrouter.chat.send({
-    chatRequest: {
-      model: MODEL,
-      maxTokens: MAX_TOKENS,
-
-      reasoning: {
-        effort: "minimal",
-      },
-
-      messages: [
-        {
-          role: "system",
-          content: GENERATION_SYSTEM_PROMPT,
-        },
-        {
-          role: "user",
-          content: userInput,
-        },
-      ],
+  const aiResult = await gemini.models.generateContent({
+    model: MODEL,
+    contents: retryFeedback
+      ? `${userInput}\n\nRETRY REQUIREMENT: Your previous HTML was incomplete (${retryFeedback}). Regenerate the entire screen from the beginning as compact, valid HTML. Keep the requested core layout and content, but simplify decorative details and close every opened element. Do not continue or explain the previous response.`
+      : userInput,
+    config: {
+      systemInstruction: GENERATION_SYSTEM_PROMPT,
+      maxOutputTokens: MAX_TOKENS,
     },
   });
 
-  if (!("choices" in aiResult)) {
-    return {
-      ok: false,
-      type: "OPENROUTER_RESPONSE_ERROR",
-      detail: "response had no choices",
-    };
-  }
-
-  const choice = aiResult.choices?.[0];
-  const finishReason = choice?.finishReason ?? null;
-  const rawCode = choice?.message?.content;
+  const finishReason =
+    aiResult.candidates?.[0]?.finishReason?.toString() ?? null;
+  const rawCode = aiResult.text;
 
   if (!rawCode || typeof rawCode !== "string") {
     return {
@@ -117,10 +107,34 @@ layout: ${screenDescription}${
   }${theme ? `,\ntheme name: ${theme} (use parent CSS vars, do not redeclare)` : ""}`;
 
   let lastFailure: Extract<Attempt, { ok: false }> | null = null;
+  let retryFeedback: string | undefined;
 
   try {
     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-      const result = await generateAttempt(userInput);
+      let result: Attempt;
+      try {
+        result = await generateAttempt(userInput, retryFeedback);
+      } catch (error) {
+        const geminiError = getGeminiErrorInfo(error);
+        console.error(
+          `generate-screen Gemini request failed for ${screenId}:`,
+          geminiError,
+        );
+        return NextResponse.json(
+          {
+            error:
+              geminiError.status === 429
+                ? "Gemini is rate limiting requests. Please wait and retry."
+                : geminiError.status === 401 || geminiError.status === 403
+                  ? "Gemini rejected the API key or request. Check GEMINI_API_KEY configuration."
+                  : "Gemini could not complete this request.",
+            type: "GEMINI_API_ERROR",
+            detail: geminiError.message.slice(0, 300),
+            statusCode: geminiError.status,
+          },
+          { status: 502 },
+        );
+      }
 
       if (result.ok) {
         const updatedResult = await db
@@ -140,6 +154,7 @@ layout: ${screenDescription}${
       }
 
       lastFailure = result;
+      retryFeedback = result.detail;
       console.error(
         `generate-screen attempt ${attempt}/${MAX_ATTEMPTS} failed for ${screenId}: [${result.type}] ${result.detail}`,
       );
@@ -164,7 +179,7 @@ layout: ${screenDescription}${
 
     return NextResponse.json(
       {
-        error: "Failed to generate screen. Please retry.",
+        error: "Failed to save the generated screen. Please retry.",
         type: "GENERATE_SCREEN_ERROR",
       },
       { status: 500 },
