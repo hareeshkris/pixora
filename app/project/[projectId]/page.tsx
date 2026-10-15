@@ -8,8 +8,10 @@ import { isScreenCodeComplete } from "@/app/store";
 import { projectDetailType, screenConfigType } from "@/config/types";
 import axios from "axios";
 import { useParams, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { getCanvasLayout } from "@/app/appComponents/projectDetails/canvasLayout";
+import { settingsContext } from "@/context/settingContext";
+import { RefreshDataContext } from "@/context/refreshDataContext";
 
 const ProjectDetailPage = () => {
   const [projectDetail, setProjectDetail] = useState<projectDetailType>();
@@ -18,6 +20,8 @@ const ProjectDetailPage = () => {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>();
+
+  const { setSettingsDetails } = useContext(settingsContext);
 
   const params = useSearchParams();
   const routeParams = useParams();
@@ -30,7 +34,7 @@ const ProjectDetailPage = () => {
   const projectId = Array.isArray(projectIdParam)
     ? projectIdParam[0]
     : projectIdParam;
-
+  const { refreshData } = useContext(RefreshDataContext);
   const configGenerationStarted = useRef(false);
   const uiGenerationStarted = useRef(false);
   const activeProjectId = useRef<string | undefined>(undefined);
@@ -49,6 +53,12 @@ const ProjectDetailPage = () => {
       activeProjectId.current = undefined;
     };
   }, [projectId]);
+
+  useEffect(() => {
+    if (refreshData?.method === "screenConfig") {
+      getProjectDetails();
+    }
+  }, [refreshData]);
 
   const fetchProject = async () => {
     const response = await axios.get(`/api/project?projectId=${projectId}`);
@@ -77,6 +87,7 @@ const ProjectDetailPage = () => {
 
       setProjectDetail(detail);
       setScreenConfig(screens);
+      setSettingsDetails(detail);
 
       if (screens.length === 0 && !configGenerationStarted.current) {
         configGenerationStarted.current = true;
@@ -86,13 +97,13 @@ const ProjectDetailPage = () => {
         if (activeProjectId.current !== projectId) return;
 
         if (generatedConfig?.screens) {
-   
           const refreshed = await fetchProject();
 
           if (activeProjectId.current !== projectId) return;
 
           setProjectDetail(refreshed.detail ?? detail);
           setScreenConfig(refreshed.screens);
+          setSettingsDetails(refreshed.detail ?? detail);
         }
       }
     } catch (err) {
@@ -214,7 +225,7 @@ const ProjectDetailPage = () => {
     }
   };
 
-  const isInitialLoading = loading && screenConfig.length === 0;
+  const isInitialLoading = loading && !projectDetail;
 
   return (
     <div className="w-full flex flex-col gap-0">

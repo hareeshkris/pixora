@@ -1,11 +1,12 @@
 import { db } from "@/config";
-import { openrouter } from "@/config/openrouter";
+import { gemini } from "@/config/gemini";
 import { APP_LAYOUT_CONFIG_PROMPT } from "@/config/prompts";
 import { projectsTable, screenConfigTable } from "@/config/schema";
-import { eq } from "drizzle-orm";
+import { currentUser } from "@clerk/nextjs/server";
+import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
-const MODEL = "google/gemini-2.5-flash-lite";
+const MODEL = "gemini-3.5-flash-lite";
 const MAX_TOKENS = 650;
 
 export async function POST(req: NextRequest) {
@@ -53,43 +54,17 @@ export async function POST(req: NextRequest) {
     // Generate configuration using AI
     // ----------------------------------------
 
-    const aiResult = await openrouter.chat.send({
-      chatRequest: {
-        model: MODEL,
-        maxTokens: MAX_TOKENS,
-
-        reasoning: {
-          effort: "minimal",
-        },
-
-        messages: [
-          {
-            role: "system",
-            content: systemPrompt,
-          },
-          {
-            role: "user",
-            content: userInput,
-          },
-        ],
+    const aiResult = await gemini.models.generateContent({
+      model: MODEL,
+      contents: userInput,
+      config: {
+        systemInstruction: systemPrompt,
+        maxOutputTokens: MAX_TOKENS,
+        responseMimeType: "application/json",
       },
     });
 
-    // ----------------------------------------
-    // Check OpenRouter response
-    // ----------------------------------------
-
-    if (!("choices" in aiResult)) {
-      return NextResponse.json(
-        {
-          error: "Invalid response from OpenRouter",
-          type: "OPENROUTER_RESPONSE_ERROR",
-        },
-        { status: 500 },
-      );
-    }
-
-    const content = aiResult.choices?.[0]?.message?.content;
+    const content = aiResult.text;
 
     if (!content || typeof content !== "string") {
       return NextResponse.json(
@@ -242,12 +217,32 @@ export async function POST(req: NextRequest) {
       "Failed to generate screen configuration";
 
     const lowerMessage = errorMessage.toLowerCase();
+    const statusCode =
+      typeof error?.status === "number" ? error.status : null;
+
+    if (
+      statusCode === 401 ||
+      statusCode === 403 ||
+      lowerMessage.includes("api key")
+    ) {
+      return NextResponse.json(
+        {
+          error: "Gemini rejected the API key or request. Check GEMINI_API_KEY configuration.",
+          type: "GEMINI_AUTH_ERROR",
+          detail: errorMessage,
+        },
+        { status: 502 },
+      );
+    }
 
     // ----------------------------------------
-    // OpenRouter credit error
+    // Gemini quota or billing errors
     // ----------------------------------------
 
     if (
+      statusCode === 402 ||
+      statusCode === 429 ||
+      lowerMessage.includes("quota") ||
       lowerMessage.includes("credit") ||
       lowerMessage.includes("payment") ||
       lowerMessage.includes("insufficient")
@@ -255,14 +250,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error: errorMessage,
-          type: "OPENROUTER_LIMIT",
+          type: "GEMINI_QUOTA_ERROR",
         },
-        { status: 402 },
+        {
+          status: statusCode === 429 ? 429 : 402,
+        },
       );
     }
 
     // ----------------------------------------
-    // OpenRouter rate limit
+    // Gemini rate limit
     // ----------------------------------------
 
     if (
@@ -272,7 +269,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error: errorMessage,
-          type: "OPENROUTER_RATE_LIMIT",
+          type: "GEMINI_RATE_LIMIT",
         },
         { status: 429 },
       );
@@ -290,4 +287,23 @@ export async function POST(req: NextRequest) {
       { status: 500 },
     );
   }
+}
+
+export async function DELETE(req: NextRequest) {
+  const projectId = req.nextUrl.searchParams.get("projectId");
+  const screenId = req.nextUrl.searchParams.get("screenId");
+
+  const user = await currentUser();
+  if (!user) {
+    return NextResponse.json({ msg: "Unauthorized User" });
+  }
+  const result = await db
+    .delete(screenConfigTable)
+    .where(
+      and(
+        eq(screenConfigTable.screenId, screenId as string),
+        eq(screenConfigTable.projectId, projectId as string),
+      ),
+    );
+    return NextResponse.json({msg:'Deleted'})
 }

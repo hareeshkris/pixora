@@ -2,9 +2,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { userDetailcontext } from "@/context/userDetailContext";
+import { settingsContext } from "@/context/settingContext";
+import { RefreshDataContext } from "@/context/refreshDataContext";
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
   const [userDetails, setUserDetails] = useState<any>(null);
+  const [settingsDetails, setSettingsDetails] = useState<any>(null);
+  const [refreshData, setRefreshData] = useState(null);
   useEffect(() => {
     createNewUser();
   }, []);
@@ -14,7 +18,11 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
   };
   return (
     <userDetailcontext.Provider value={{ userDetails, setUserDetails }}>
-      {children}
+      <settingsContext.Provider value={{ settingsDetails, setSettingsDetails }}>
+        <RefreshDataContext.Provider value={{ refreshData, setRefreshData }}>
+          <>{children}</>
+        </RefreshDataContext.Provider>
+      </settingsContext.Provider>
     </userDetailcontext.Provider>
   );
 };
